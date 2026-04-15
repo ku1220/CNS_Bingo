@@ -17,6 +17,7 @@ const bingoOverlay = qs("bingoOverlay");
 const bingoRank = qs("bingoRank");
 const qrCodeGame = qs("qrCodeGame");
 const GUEST_SESSION_KEY = "cns-bingo-guest-session";
+const PUBLIC_BASE_URL = "https://cns-bingo.onrender.com";
 
 // クライアント側の一時状態（サーバーが正）
 const state = {
@@ -27,7 +28,6 @@ const state = {
   playerSnapshot: null,
   bingoOverlayShown: false,
   socket: null,
-  hostBaseUrl: "",
   drawAnimationTimer: null,
   drawRequestTimeout: null,
   isDrawing: false,
@@ -52,21 +52,9 @@ function setRoomBadge(code) {
   roomBadge.classList.remove("hidden");
 }
 
-// 参加URLに使うベースURLを決定
-function getJoinBaseUrl() {
-  const custom = (state.hostBaseUrl || "").trim();
-  if (!custom) return window.location.origin;
-  try {
-    const parsed = new URL(custom);
-    return parsed.origin;
-  } catch (err) {
-    return window.location.origin;
-  }
-}
-
 // 参加用URLを生成
 function buildJoinUrl(code) {
-  const url = new URL(getJoinBaseUrl());
+  const url = new URL(PUBLIC_BASE_URL);
   url.searchParams.set("role", "guest");
   url.searchParams.set("room", code);
   return url.toString();
@@ -201,7 +189,6 @@ function resetClientState() {
   state.roomSnapshot = null;
   state.playerSnapshot = null;
   state.bingoOverlayShown = false;
-  state.hostBaseUrl = "";
   state.previousLastDraw = null;
   state.guestPreviewRoomCode = "";
   setRoomBadge(null);
@@ -536,7 +523,6 @@ function triggerHostDraw() {
 qs("createRoom").addEventListener("click", () => {
   const socket = connectSocket();
   if (!socket) return;
-  state.hostBaseUrl = qs("hostBaseUrl").value.trim();
   socket.emit("host:create", {
     size: Number(qs("hostSize").value),
     maxPlayers: Number(qs("hostMax").value),
