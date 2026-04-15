@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<!--
+  CNS Bingo: ブラウザ完結のビンゴUI（主催者/参加者共通）
+  画面は role / host / guest の3系統に分かれ、JSで表示切替します。
+-->
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CNS Bingo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- 背景装飾 -->
+  <div class="bg"></div>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-text">
+        <div class="brand-title">
+          <span class="brand-title-text">CNS <span class="brand-title-accent">BINGO</span></span>
+          <img class="brand-title-image" src="images/POP_Title.svg" alt="CNS BINGO" />
+        </div>
+        <div id="brandSub" class="brand-sub">Elegant realtime bingo lounge</div>
+      </div>
+    </div>
+    <div id="roomBadge" class="room-badge hidden"></div>
+  </header>
+
+  <main class="shell">
+    <!-- 主催者：ルーム作成（設定） -->
+    <section id="hostSetup" class="panel hidden">
+      <h2>ルーム設定</h2>
+      <p class="lead">PCでルームを作成し、参加者は発行されたQRコードからスマホでアクセスします。</p>
+      <div class="grid-2">
+        <label class="field">
+          <span>最大参加人数</span>
+          <input id="hostMax" type="number" min="1" max="500" value="60" />
+        </label>
+        <label class="field">
+          <span>盤面サイズ</span>
+          <select id="hostSize">
+            <option value="3">3x3（中央FREE）</option>
+            <option value="5" selected>5x5（中央FREE）</option>
+            <option value="7">7x7（中央FREE）</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>自動チェック</span>
+          <select id="hostAuto">
+            <option value="on" selected>ON</option>
+            <option value="off">OFF</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>デザインプリセット</span>
+          <select id="hostPreset">
+            <option value="elegant" selected>エレガント</option>
+            <option value="pop">ポップ</option>
+            <option value="cat">猫</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>参加URLベース（任意）</span>
+          <input id="hostBaseUrl" type="text" placeholder="例: http://192.168.0.10:3000" />
+        </label>
+      </div>
+      <div class="host-actions">
+        <button class="btn primary" id="createRoom">ルームを作成</button>
+      </div>
+    </section>
+
+    <!-- 主催者：ゲーム進行 -->
+    <section id="hostGame" class="panel hidden">
+      <div class="host-game-head">
+        <div>
+          <h2>抽選結果</h2>
+        </div>
+        <button class="btn danger" id="endGame">ゲーム終了</button>
+      </div>
+      <div class="host-game-main">
+        <div class="host-draw">
+          <div class="draw-stage">
+            <div class="draw-box" id="drawBox">
+              <div class="draw-value" id="drawValue">-</div>
+              <div class="draw-anim">抽選中…</div>
+            </div>
+            <div class="draw-actions">
+              <button class="btn primary" id="drawButton">抽選スタート</button>
+              <div class="draw-note">Enterキーでも開始できます</div>
+            </div>
+          </div>
+          <div class="host-stats">
+            <div class="stat">
+              <div class="stat-label">参加人数</div>
+              <div class="stat-value" id="hostPlayerCount2" data-value="0">0</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">リーチ</div>
+              <div class="stat-value" id="hostReachCount2" data-value="0">0</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">ビンゴ</div>
+              <div class="stat-value" id="hostBingoCount2" data-value="0">0</div>
+            </div>
+          </div>
+          <aside class="qr-card join-card">
+            <div class="qr-title">参加用QRコード</div>
+            <div class="qr-placeholder">
+              <div id="qrCodeGame" class="qr-code"></div>
+              <div id="qrLimitNotice" class="qr-limit-notice hidden">参加人数の上限に達しました。</div>
+            </div>
+          </aside>
+        </div>
+        <div class="history">
+          <h3>抽選履歴</h3>
+          <div id="historyGrid" class="history-grid"></div>
+        </div>
+        <div class="alerts" id="hostAlerts"></div>
+      </div>
+    </section>
+
+    <!-- 参加者：入室画面 -->
+    <section id="guestJoin" class="panel hidden">
+      <h2>参加する</h2>
+      <div class="grid-2">
+        <label class="field">
+          <span>ニックネーム</span>
+          <input id="guestName" type="text" placeholder="シー・エヌ・エス" maxlength="16" />
+        </label>
+        <label class="field">
+          <span>ルームコード</span>
+          <input id="guestRoom" type="text" placeholder="1234" maxlength="6" />
+        </label>
+      </div>
+      <div class="host-actions">
+        <button class="btn primary" id="joinRoom">参加</button>
+      </div>
+    </section>
+
+    <!-- 参加者：ビンゴカード表示 -->
+    <section id="guestGame" class="panel hidden">
+      <div class="guest-head">
+        <h2>ビンゴカード</h2>
+        <div id="guestReachBadge" class="guest-reach-badge hidden">リーチ！</div>
+      </div>
+      <div id="guestBingoMessage" class="guest-bingo-message hidden">ビンゴになりました。<br />おめでとうございます！</div>
+      <div class="card-wrap">
+        <div id="bingoCard" class="bingo-card"></div>
+      </div>
+      <div class="guest-actions">
+        <div class="last-draw">最新: <span id="guestLastDraw">-</span></div>
+        <button class="btn ghost" id="showHistory">履歴を見る</button>
+      </div>
+      <div id="guestHistory" class="guest-history hidden"></div>
+    </section>
+  </main>
+
+  <!-- リーチ・ビンゴ演出 -->
+  <div id="bingoOverlay" class="overlay hidden">
+    <div class="overlay-card">
+      <div class="overlay-title">BINGO!</div>
+      <div class="overlay-rank" id="bingoRank">1番目</div>
+      <div class="overlay-note">おめでとうございます！</div>
+      <button class="btn primary" id="closeOverlay">閉じる</button>
+    </div>
+  </div>
+
+  <!-- ライブラリ読み込み（QRとSocket.io） -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

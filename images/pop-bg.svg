@@ -1,0 +1,33 @@
+<svg width="1600" height="1200" viewBox="0 0 1600 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1200" fill="#CC0051"/>
+  <rect x="0" width="70" height="1200" fill="#97003B" fill-opacity="0.58"/>
+  <rect x="140" width="70" height="1200" fill="#97003B" fill-opacity="0.58"/>
+  <rect x="280" width="70" height="1200" fill="#97003B" fill-opacity="0.58"/>
+  <rect x="420" width="70" height="1200" fill="#97003B" fill-opacity="0.58"/>
+  <rect x="560" width="70" height="1200" fill="#97003B" fill-opacity="0.58"/>
+  <rect x="700" width="70" height="1200" fill="#97003B" fill-opacity="0.58"/>
+  <rect x="840" width="70" height="1200" fill="#97003B" fill-opacity="0.58"/>
+  <rect x="980" width="70" height="1200" fill="#97003B" fill-opacity="0.58"/>
+  <rect x="1120" width="70" height="1200" fill="#97003B" fill-opacity="0.58"/>
+  <rect x="1260" width="70" height="1200" fill="#97003B" fill-opacity="0.58"/>
+  <rect x="1400" width="70" height="1200" fill="#97003B" fill-opacity="0.58"/>
+  <rect x="1540" width="60" height="1200" fill="#97003B" fill-opacity="0.58"/>
+  <g opacity="0.8">
+    <circle cx="160" cy="184" r="12" fill="#FFE451"/>
+    <circle cx="260" cy="232" r="16" fill="#36D86B"/>
+    <circle cx="354" cy="132" r="10" fill="#17BFFF"/>
+    <circle cx="1374" cy="180" r="14" fill="#FFE451"/>
+    <circle cx="1242" cy="266" r="11" fill="#17BFFF"/>
+    <circle cx="1160" cy="132" r="16" fill="#FF8DBE"/>
+    <circle cx="180" cy="926" r="16" fill="#17BFFF"/>
+    <circle cx="302" cy="1004" r="12" fill="#FFE451"/>
+    <circle cx="1320" cy="934" r="14" fill="#36D86B"/>
+    <circle cx="1450" cy="1040" r="12" fill="#FF8DBE"/>
+  </g>
+  <g opacity="0.9">
+    <path d="M110 340L117 360H138L121 372L128 392L110 380L92 392L99 372L82 360H103L110 340Z" fill="#FFE451"/>
+    <path d="M1460 340L1467 360H1488L1471 372L1478 392L1460 380L1442 392L1449 372L1432 360H1453L1460 340Z" fill="#FFE451"/>
+    <path d="M190 740L197 760H218L201 772L208 792L190 780L172 792L179 772L162 760H183L190 740Z" fill="#36D86B"/>
+    <path d="M1380 786L1387 806H1408L1391 818L1398 838L1380 826L1362 838L1369 818L1352 806H1373L1380 786Z" fill="#17BFFF"/>
+  </g>
+</svg>

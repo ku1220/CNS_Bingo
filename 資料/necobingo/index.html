@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+    </head>
+    <body>
+        <script type="text/javascript" src="https://cnsrd.jp/necobingo/js/bingo_machine.js"></script>
+        <div id="bingoMachine"></div>
+        <script>
+            // 表示タイプ
+            // fiexed : サイズ固定(720x560)
+            // scaling : ブラウザのウインドウサイズいっぱいに拡大縮小する
+            BingoMachine.setDisplayType("scaling");
+            
+            // ビンゴカードURL
+            BingoMachine.setBingoCard("https://cnsrd.jp/necobingo/bingocard.html");                        
+        </script>
+    </body>
+</html>
