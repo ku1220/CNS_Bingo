@@ -558,16 +558,15 @@ qs("endGame").addEventListener("click", () => {
 // 参加
 qs("joinRoom").addEventListener("click", () => {
   const name = qs("guestName").value.trim();
-  const roomCode = qs("guestRoom").value.trim();
-  if (!name || !roomCode) return;
+  const roomCode = new URLSearchParams(window.location.search).get("room")?.trim() || "";
+  if (!name) return;
+  if (!roomCode) {
+    alert("参加URLが正しくありません。主催者が共有したURLからアクセスしてください。");
+    return;
+  }
   const socket = connectSocket();
   if (!socket) return;
   socket.emit("guest:join", { roomCode, name });
-});
-
-qs("guestRoom").addEventListener("input", (event) => {
-  if (state.role) return;
-  requestGuestRoomPreview(event.target.value);
 });
 
 // 履歴の表示切替
@@ -588,7 +587,7 @@ function bootFromUrl() {
   if (role === "guest") {
     applyPreset("elegant");
     showScreen("guestJoin");
-    if (room) qs("guestRoom").value = room;
+    setRoomBadge(room || null);
     requestGuestRoomPreview(room);
     if (room) tryGuestRejoin(room);
     return;
