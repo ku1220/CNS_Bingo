@@ -14,7 +14,7 @@
 
 ## Requirements
 
-- Node.js
+- Node.js 24系（24.22.1以上、25未満）
 - npm
 
 ## Setup
@@ -57,5 +57,6 @@ http://localhost:3000
 
 ## Notes
 
+- Render の Node.js バージョンは `package.json` の `engines.node` で指定しています。Render 側に `NODE_VERSION` 環境変数がある場合はそちらが優先されるため、削除するか同じ条件に揃えてください。
 - ルーム状態はメモリ保持です。サーバー再起動で消えます。
 - `資料/` フォルダは公開対象から除外しています。
